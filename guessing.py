@@ -7,7 +7,7 @@ tries = 3
 while tries >= 0:
 
 	if tries == 0:
-		print "you lose!!! my numer was %s" %numberToGuess
+		print "you lose!!! my number was %s" %numberToGuess
 		break
 	
 	print "you have %s tries left" %tries
