@@ -22,14 +22,14 @@ class App:
     
     def __init__(self, master):
 
-        frame = Frame(master)
+        frame = Frame(master,height = 100, width = 100)
         frame.pack()
 
         self.currentInput = StringVar()
         self.binarystore = ''
 
         self.entryField = Entry(frame, textvariable = self.currentInput)
-        self.entryField.pack()
+        self.entryField.pack(fill = BOTH)
 
         self.binDecButton = Button(frame,text="bin->dec",command =lambda: self.binaryToDecimalPrinter(self.currentInput.get()))
         self.binDecButton.pack()
@@ -37,8 +37,8 @@ class App:
         self.decBinButton = Button(frame, text="dec->bin",command =lambda: self.decimalToBinaryPrinter(self.currentInput.get()))
         self.decBinButton.pack()
 
-        self.outputDisplay = Label(frame,text='---')	
-        self.outputDisplay.pack(side=BOTTOM)
+        self.outputDisplay = Label(frame,text='', background = 'grey')	
+        self.outputDisplay.pack(side=BOTTOM, fill = BOTH, expand = 1)
 
     def decimalToBinaryPrinter(self,decimalNumber):       
         o = decimalToBinary(int(decimalNumber))
