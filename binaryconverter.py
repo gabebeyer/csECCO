@@ -1,8 +1,12 @@
-def main():
-	print binaryToDecimal('100111011')
-	print decimalToBinary(7652)
+from Tkinter import *
 
-#wants a string 
+def decimalToBinary(decimalNumber): 
+	
+	if decimalNumber == 0:
+		return '0'
+	else:
+		return decimalToBinary(decimalNumber/2) + str(decimalNumber%2)
+
 def binaryToDecimal(binaryNumber):
 
 	positional = len(binaryNumber) - 1
@@ -14,14 +18,44 @@ def binaryToDecimal(binaryNumber):
 
 	return int(decimal)
 
+class App:
+    
+    def __init__(self, master):
 
-#wants an integer 
-def decimalToBinary(decimalNumber): 
-	
-	if decimalNumber == 0:
-		return '0'
-	else:
-		return decimalToBinary(decimalNumber/2) + str(decimalNumber%2)
+        frame = Frame(master)
+        frame.pack()
+
+        self.currentInput = StringVar()
+        self.binarystore = ''
+
+        self.entryField = Entry(frame, textvariable = self.currentInput)
+        self.entryField.pack()
+
+        self.binDecButton = Button(frame,text="bin->dec",command =lambda: self.binaryToDecimalPrinter(self.currentInput.get()))
+        self.binDecButton.pack()
+
+        self.decBinButton = Button(frame, text="dec->bin",command =lambda: self.decimalToBinaryPrinter(self.currentInput.get()))
+        self.decBinButton.pack()
+
+        self.outputDisplay = Label(frame,text='---')	
+        self.outputDisplay.pack(side=BOTTOM)
+
+    def decimalToBinaryPrinter(self,decimalNumber):       
+        o = decimalToBinary(int(decimalNumber))
+        self.outputDisplay.config(text=o)
+        print o
+    
+    def binaryToDecimalPrinter(self,binaryNumber):       
+        o = binaryToDecimal(str(binaryNumber))
+        self.outputDisplay.config(text=o)
+        print o
+
+def main():
+	root = Tk()
+	app = App(root)
+	root.mainloop()
+	root.destroy()
 
 if __name__ == '__main__':
 	main()
+
