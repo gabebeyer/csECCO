@@ -4,13 +4,13 @@ import sys
 import os
 import time
 
+
+
 class App:
-    def __init__(self, master):
-        
+    def __init__(self, master):       
+        self.master = master
         self.customFont = tkFont.Font(family="Helvetica", size=44)
-
         self.turn = 0
-
                     #center
         # square : [ x, y , filled , owner]
         self.square_info = {1: [33,33,0,''],
@@ -21,14 +21,11 @@ class App:
                             6: [166,100,0,''],
                             7: [33,166,0,''],
                             8: [100,166,0,''],
-                            9: [166,166,0,'']}
-
-       
+                            9: [166,166,0,'']}       
         self.canvas = Canvas(master, width=200, height=200)
         self.canvas.bind("<Button-1>", self.mouse_click)
         self.canvas.pack()
         self.draw_level()
-
         mainloop()
 
     def draw_mark(self,mark,square):
@@ -44,19 +41,18 @@ class App:
                 self.square_info[square][1],
                 text = 'X',
                 font = self.customFont)
-
+    
     ##full restart
     def end_game(self,winner):
-        time.sleep(2)
 
-        self.canvas.create_text(20,20,text = "the winner is!!!")
-       
-        python = sys.executable
-       
-        os.execl(python, python, * sys.argv)
+        self.canvas.delete("all")
 
-    def check_for_winner(self):
-        
+        self.master.destroy()
+
+        main()
+
+
+    def check_for_winner(self):        
         square1,square2,square3 = self.square_info[1][3],self.square_info[2][3],self.square_info[3][3]        
         square4,square5,square6 = self.square_info[4][3],self.square_info[5][3],self.square_info[6][3]
         square7,square8,square9 = self.square_info[7][3], self.square_info[8][3],self.square_info[9][3]
@@ -124,11 +120,13 @@ class App:
                 return 6
             elif y >= 133 and y < 200:
                 return 9
-root = Tk()
-app = App(root)
-root.mainloop()
-root.destroy()
 
+def main():
+    root = Tk()
+    app = App(root)
+    root.mainloop()
 
+if __name__ == '__main__':
+    main()
 
 
