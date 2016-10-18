@@ -1,17 +1,16 @@
 from Tkinter import *
 import tkFont
 import tkMessageBox
-import random
+import sys
+import os
 import time
-
-
 
 class App:
     def __init__(self, master):       
         self.master = master
         self.customFont = tkFont.Font(family="Helvetica", size=44)
         self.turn = 0
-        self.gamemode = 2
+        self.gamemode = 'singleplayer'
         #self.testNum = 0
                     #center
         # square : [ x, y , filled , owner]
@@ -24,14 +23,6 @@ class App:
                             7: [33,166,0,''],
                             8: [100,166,0,''],
                             9: [166,166,0,'']}       
-        #		1    2    3
-        #
-        #
-        #       4    5    6
-        #
-        #       
-        #       7    8    9
-
         self.canvas = Canvas(master, width=200, height=200)
         self.canvas.bind("<Button-1>", self.mouse_click)
         self.canvas.pack()
@@ -88,69 +79,22 @@ class App:
         if self.testNum == 9:
             self.end_game("You both lose!!")
 
-    def cpu_turn(self, *args):
-
-
-        #center
-        if self.square_info[5][2] == 0:
-            self.draw_mark('o',5)
-            self.square_info[5][2] = 1
-            self.square_info[5][3] = 'o'
-            return
-        
-        
-
-        #corners
-        for i in [1,3,7,9]:
-            if self.square_info[i][2] == 0:
-                self.draw_mark('o',i)
-                self.square_info[i][2] = 1
-                self.square_info[i][3] = 'o'
-                
-                return
-      
-            #edges
-        for i in [2,4,6,8]:
-            if self.square_info[i][2] == 0:
-                self.draw_mark('o',i)
-                self.square_info[i][2] = 1
-                self.square_info[i][3] = 'o'
-                
-                return
-     
-
-            
     def mouse_click(self,event):
 
-        square = self.coord_to_square(event.x, event.y)
-
-        if self.gamemode == 1:
-
-            if self.turn == 0 and self.square_info[square][2] == 0:
-                self.draw_mark('x',square)
-                self.square_info[square][2] = 1
-                self.square_info[square][3] = 'x'
-                self.turn = 1
-
-            elif self.turn == 1 and self.square_info[square][2] == 0:
-                self.draw_mark('o',square)
-                self.square_info[square][2] = 1
-                self.square_info[square][3] = 'o'
-                self.turn = 0
-
-        elif self.gamemode == 2:
-
-            if self.square_info[square][2] == 0:
-
-                self.draw_mark('x', square)
-                self.square_info[square][2] = 1
-                self.square_info[square][3] = 'x'
-
-                self.cpu_turn(self)
-
-        self.check_for_winner()
-
-
+        square = self.coord_to_square(event.x, event.
+        
+        if self.turn == 0 and self.square_info[square][2] == 0:
+            self.draw_mark('x',square)
+            self.square_info[square][2] = 1
+            self.square_info[square][3] = 'x'
+            self.turn = 1       
+        
+        elif self.turn == 1 and self.square_info[square][2] == 0            self.draw_mark('o',square)
+            self.square_info[square][2] = 1
+            self.square_info[square][3] = 'o'
+            self.turn = 0 
+            
+        self.check_for_winner()    
 
     def draw_level(self):    
         self.canvas.create_line(0, 66, 200, 66)
