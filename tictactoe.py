@@ -89,8 +89,6 @@ class App:
             self.end_game("You both lose!!")
 
     def cpu_turn(self, *args):
-
-
         #center
         if self.square_info[5][2] == 0:
             self.draw_mark('o',5)
@@ -98,24 +96,20 @@ class App:
             self.square_info[5][3] = 'o'
             return
         
-        
-
         #corners
         for i in [1,3,7,9]:
             if self.square_info[i][2] == 0:
                 self.draw_mark('o',i)
                 self.square_info[i][2] = 1
-                self.square_info[i][3] = 'o'
-                
+                self.square_info[i][3] = 'o'            
                 return
       
-            #edges
+        #edges
         for i in [2,4,6,8]:
             if self.square_info[i][2] == 0:
                 self.draw_mark('o',i)
                 self.square_info[i][2] = 1
                 self.square_info[i][3] = 'o'
-                
                 return
      
 
@@ -146,7 +140,12 @@ class App:
                 self.square_info[square][2] = 1
                 self.square_info[square][3] = 'x'
 
+
+                self.check_for_winner()
+
+
                 self.cpu_turn(self)
+
 
         self.check_for_winner()
 
