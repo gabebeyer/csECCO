@@ -1,17 +1,23 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+
+
 from Tkinter import *
 import tkFont
 import tkMessageBox
+import tkSimpleDialog
 import random
 import time
 
 
 
 class App:
-    def __init__(self, master):       
+    def __init__(self, master,gamemode):       
         self.master = master
         self.customFont = tkFont.Font(family="Helvetica", size=44)
         self.turn = 0
-        self.gamemode = 2
+        self.gamemode = gamemode
 
         self.square_info = {1: [33,33,0,''],
                             2: [100,33,0,''],
@@ -23,17 +29,13 @@ class App:
                             8: [100,166,0,''],
                             9: [166,166,0,'']}       
 
-     
-
-
         self.canvas = Canvas(master, width=200, height=200)
         self.canvas.bind("<Button-1>", self.mouse_click)
         self.canvas.pack()
         self.draw_level()
         mainloop()
 
-    def draw_mark(self,mark,square):
-        
+    def draw_mark(self,mark,square):       
         if mark == 'o':
             self.canvas.create_text(
                 self.square_info[square][0],
@@ -126,7 +128,7 @@ class App:
             
     def mouse_click(self,event):
         square = self.coord_to_square(event.x, event.y)
-        if self.gamemode == 1:
+        if self.gamemode == 2:
             if self.turn == 0 and self.square_info[square][2] == 0:
                 self.draw_mark('x',square)
                 self.square_info[square][2] = 1
@@ -137,7 +139,7 @@ class App:
                 self.square_info[square][2] = 1
                 self.square_info[square][3] = 'o'
                 self.turn = 0
-        elif self.gamemode == 2:
+        elif self.gamemode == 1:
             if self.square_info[square][2] == 0:
                 self.draw_mark('x', square)
                 self.square_info[square][2] = 1
@@ -167,13 +169,20 @@ class App:
             elif y >= 66 and y < 133: return 6
             elif y >= 133 and y < 200:return 9
 
+
+
 def main(x,y):
     root = Tk()
     root.geometry("+"+str(x)+"+"+str(y))
-    app = App(root)
+    players = tkSimpleDialog.askinteger("players", "number of players", initialvalue = 1)
+
+
+    app = App(root,players)
     root.mainloop()
 
 if __name__ == '__main__':
+   
+  
     main(200,100)
 
 

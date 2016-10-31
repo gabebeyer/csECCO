@@ -13,7 +13,7 @@ class Minesweeper():
         self.master = master
         self.fieldSize = int(raw_input("field size"))
         self.buttons = [] 
-        self.bombPercent = 20
+        self.bombPercent = 10
 
         # button , isBomb , location
         for x in range(self.fieldSize):
@@ -33,19 +33,27 @@ class Minesweeper():
             for button in row:
                 x = (rowVar , colVar)
                 button[0].grid(row = rowVar, column = colVar)      
-                self.buttons[rowVar][colVar][0].bind('<Button-1>',functools.partial(self.lClickWrap,button=self.buttons[rowVar][colVar]))
+                self.buttons[rowVar][colVar][0].bind(
+                    '<Button-1>',
+                    functools.partial(self.lClickWrap,
+                        button=self.buttons[rowVar][colVar])
+                    )
                 colVar += 1
             rowVar += 1
 
 
     def lClickWrap(self,event,button):
-        
-        if button[1] == 1:
-            print 'bomb'
-        else:
-            print "button is at: " + str(button[2])
+  
             
-            self.surrounding(button)
+        button[0].config(text = ' ')
+        self.reveal(self.surrounding(button))
+
+        
+
+    def reveal(self,neighbors):
+
+
+
 
 
     def surrounding(self,button):  
