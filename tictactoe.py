@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 
-
 from Tkinter import *
 import tkFont
 import tkMessageBox
@@ -11,14 +10,12 @@ import random
 import time
 
 
-
 class App:
     def __init__(self, master,gamemode):       
         self.master = master
         self.customFont = tkFont.Font(family="Helvetica", size=44)
         self.turn = 0
         self.gamemode = gamemode
-
         self.square_info = {1: [33,33,0,''],
                             2: [100,33,0,''],
                             3: [166,33,0,''],
@@ -27,13 +24,26 @@ class App:
                             6: [166,100,0,''],
                             7: [33,166,0,''],
                             8: [100,166,0,''],
-                            9: [166,166,0,'']}       
+                            9: [166,166,0,'']}   
+
+
+        self.threats = [[self.square_info[1],self.square_info[2],self.square_info[3]],
+                    [self.square_info[4],self.square_info[5],self.square_info[6]],
+                    [self.square_info[7],self.square_info[8],self.square_info[9]],
+                    [self.square_info[1],self.square_info[4],self.square_info[7]],
+                    [self.square_info[2],self.square_info[5],self.square_info[8]],
+                    [self.square_info[3],self.square_info[6],self.square_info[9]],
+                    [self.square_info[1],self.square_info[2],self.square_info[3]],
+                    [self.square_info[1],self.square_info[2],self.square_info[3]]]
+    
+
 
         self.canvas = Canvas(master, width=200, height=200)
         self.canvas.bind("<Button-1>", self.mouse_click)
         self.canvas.pack()
         self.draw_level()
         mainloop()
+
 
     def draw_mark(self,mark,square):       
         if mark == 'o':
@@ -60,36 +70,18 @@ class App:
 
 
     def check_for_winner(self):        
-        square1,square2,square3 = self.square_info[1][3],self.square_info[2][3],self.square_info[3][3]        
-        square4,square5,square6 = self.square_info[4][3],self.square_info[5][3],self.square_info[6][3]
-        square7,square8,square9 = self.square_info[7][3], self.square_info[8][3],self.square_info[9][3]    
-        if square1 == square2 == square3 != '': self.end_game(square1)
-        if square4 == square5 == square6 != '': self.end_game(square4)
-        if square7 == square8 == square9 != '': self.end_game(square7)
-        if square1 == square4 == square7 != '': self.end_game(square1)
-        if square2 == square5 == square8 != '': self.end_game(square2)
-        if square3 == square6 == square9 != '': self.end_game(square3)
-        if square1 == square5 == square9 != '': self.end_game(square5)
-        if square7 == square5 == square3 != '': self.end_game(square5)
-
+        for threat in self.threats:    
+            if threat[0][3] == threat[1][3] == threat[2][3] != '':
+                self.end_game(threat[0][3])
         self.testNum = 0
         for x in xrange(1,10):
             self.testNum +=  self.square_info[x][2]
         if self.testNum == 9:
             self.end_game("(=ↀωↀ=)")
 
+
     def cpu_turn(self, *args):
-
-        threats = [[self.square_info[1],self.square_info[2],self.square_info[3]],
-                    [self.square_info[4],self.square_info[5],self.square_info[6]],
-                    [self.square_info[7],self.square_info[8],self.square_info[9]],
-                    [self.square_info[1],self.square_info[4],self.square_info[7]],
-                    [self.square_info[2],self.square_info[5],self.square_info[8]],
-                    [self.square_info[3],self.square_info[6],self.square_info[9]],
-                    [self.square_info[1],self.square_info[2],self.square_info[3]],
-                    [self.square_info[1],self.square_info[2],self.square_info[3]]]
-
-        for threat in threats:
+        for threat in self.threats:
             number = 0
             for box in threat:
                 if box[2] == 1 and box[3] == 'x':
@@ -155,6 +147,7 @@ class App:
         self.canvas.create_line(66, 0, 66, 200)
         self.canvas.create_line(133, 0, 133, 200)
 
+
     def coord_to_square(self,x,y):
         if x > 0 and x < 66:
             if y > 0 and y < 66: return 1
@@ -170,19 +163,25 @@ class App:
             elif y >= 133 and y < 200:return 9
 
 
-
 def main(x,y):
     root = Tk()
     root.geometry("+"+str(x)+"+"+str(y))
+
+
     players = tkSimpleDialog.askinteger("players", "number of players", initialvalue = 1)
 
 
-    app = App(root,players)
+    app = App(root,players) 
     root.mainloop()
+
 
 if __name__ == '__main__':
    
-  
     main(200,100)
+
+
+
+
+
 
 
