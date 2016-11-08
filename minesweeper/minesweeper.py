@@ -14,8 +14,7 @@ class Minesweeper():
         self.fieldSize = int(raw_input("field size"))
         self.buttons = [] 
         self.bombPercent = 10
-
-        # button , isBomb , location
+        # button , isBomb , location 
         for x in range(self.fieldSize):
             row = []
             for i in range(self.fieldSize):           
@@ -43,25 +42,35 @@ class Minesweeper():
 
 
     def lClickWrap(self,event,button):
-  
+         
+        if button[1] == 1:
             
-        button[0].config(text = ' ')
-        self.reveal(self.surrounding(button))
+            print "you lose!"
+
+        else:
+
+            button[0].config(text = ' ')
+ 
+            self.reveal(button)
 
         
+    
+        
+    def reveal(self,button):
 
-    def reveal(self,neighbors):
+        if button[1] == 0:
 
+            for neighbor in self.surrounding(button):
 
-
-
+            
+       
 
     def surrounding(self,button):  
         neighbors = []
         centerx,centery = button[2][0] , button[2][1]       
         for x in range(centerx-1,centerx+2):
             for y in range(centery-1,centery+2):     
-                if (x,y) >= (0,0) and x < self.fieldSize and y < self.fieldSize:        
+                if x >= 0 and y >=0 and x < self.fieldSize and y < self.fieldSize:        
                     neighbors.append(self.buttons[x][y])        
         neighbors.remove(self.buttons[centerx][centery])           
         return neighbors

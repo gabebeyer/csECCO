@@ -81,12 +81,18 @@ class App:
 
 
     def cpu_turn(self, *args):
+        
         for threat in self.threats:
-            number = 0
+            numberx = 0
+            numbero = 0
+            
             for box in threat:
                 if box[2] == 1 and box[3] == 'x':
-                    number += 1 
-            if number == 2:
+                    numberx += 1 
+                if box[2] == 1 and box[3] == 'o':
+                    numbero += 1 
+            
+            if numberx == 2 or numbero == 2:
                 for box in threat:
                     if box[2] == 0:
                         for key in self.square_info.keys():
@@ -94,7 +100,8 @@ class App:
                                 self.draw_mark('o',key)
                                 self.square_info[key][2] = 1
                                 self.square_info[key][3] = 'o'
-                                return
+                                return               
+
         #center
         if self.square_info[5][2] == 0:
             self.draw_mark('o',5)
