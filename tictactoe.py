@@ -81,7 +81,7 @@ class App:
 
 
     def cpu_turn(self, *args):
-        
+
         for threat in self.threats:
             numberx = 0
             numbero = 0
@@ -91,7 +91,7 @@ class App:
                     numberx += 1 
                 if box[2] == 1 and box[3] == 'o':
                     numbero += 1 
-            
+            `
             if numberx == 2 or numbero == 2:
                 for box in threat:
                     if box[2] == 0:

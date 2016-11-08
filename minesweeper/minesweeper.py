@@ -10,23 +10,26 @@ import numpy as np
 class Minesweeper():
     """docstring for minesweeper"""
     def __init__(self, master):
+        
         self.master = master
         self.fieldSize = int(raw_input("field size"))
         self.buttons = [] 
         self.bombPercent = 10
-        # button , isBomb , location 
+        
+        #make button: button , isBomb , location, revealed
         for x in range(self.fieldSize):
             row = []
             for i in range(self.fieldSize):           
                 row.append([Button(master, text="■") ,
                             1 if random.randint(0,100) < self.bombPercent else 0,
-                            (x,i)
+                            (x,i),
+                            0
                     ])
             self.buttons.append(row)
-
-        rowVar = 0
+        
         #put buttons on screen
-        #and sets up function for buttons
+        #and sets up click function for buttons
+        rowVar = 0
         for row in self.buttons:
             colVar = 0
             for button in row:
@@ -41,28 +44,30 @@ class Minesweeper():
             rowVar += 1
 
 
-    def lClickWrap(self,event,button):
-         
-        if button[1] == 1:
-            
+    def lClickWrap(self,event,button):         
+        if button[1] == 1:           
             print "you lose!"
-
         else:
-
-            button[0].config(text = ' ')
- 
             self.reveal(button)
 
-        
-    
-        
     def reveal(self,button):
+        button[0].config(text = ' ')
+        button[3] = 1
+        print "you clicked " + str(button[2])
+        for neighbor in self.surrounding(button):
+            if neighbor[3] == 0: 
+                bombs = 0
+                for subneighbor in self.surrounding(neighbor):
+                   if subneighbor[1] == 1:
+                        bombs += 1
+                if neighbor[1] == 0:                           
+                    if bombs > 0 :
+                         neighbor[0].config(text = str(bombs))  
+                    else:
+                        neighbor[0].config(text = ' ')
+                if bombs == 0 and neighbor[3] == 0:          
+                   self.reveal(neighbor)
 
-        if button[1] == 0:
-
-            for neighbor in self.surrounding(button):
-
-            
        
 
     def surrounding(self,button):  
@@ -75,7 +80,6 @@ class Minesweeper():
         neighbors.remove(self.buttons[centerx][centery])           
         return neighbors
 
- 
 def main():
     global root
     root = Tk()
